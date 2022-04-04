@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const jsonwebtoken = require('jsonwebtoken')
 const jwt = require('express-jwt')
 const cookieParser = require('cookie-parser')
+const { initSchedule } = require('./init-schedule')
 
 const app = express()
 
@@ -23,8 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 require('./src/routes/sms.route')(app)
+require('./src/routes/calls.route')(app)
 
+ 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`Started listening on port ${PORT}`)
+  
+  // Initialize the scheduled works
+  initSchedule()
 })
